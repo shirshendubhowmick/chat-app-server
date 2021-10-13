@@ -12,11 +12,16 @@ function processMessageEvent(
 ) {
   if (!authPayload) {
     callback(getSocketAcknowledgementResponse(false, 'S001'));
+    return;
   }
   logger.logInfo('Received message from user', {
     messagePayload,
   });
-  socket.broadcast.emit('message', messagePayload);
+  socket.broadcast.emit('message', {
+    userId: authPayload.userId,
+    name: authPayload.name,
+    message: messagePayload,
+  });
   callback(getSocketAcknowledgementResponse(true));
 }
 
