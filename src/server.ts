@@ -17,9 +17,9 @@ const io = new Server(server);
 // * Middlewares
 app.use(morgan('combined'));
 
-// Routers
-app.get('/', router.rootRouter);
-app.get('/user', router.userRouter);
+// * Routers
+app.use('/', router.rootRouter);
+app.use('/user', router.userRouter);
 
 app.use(fourOFourHandler);
 
