@@ -1,6 +1,6 @@
 import httpStatusCodes from './httpStatusCodes';
 
-export type ErrorCodes = 'E001' | 'E002' | 'E003';
+export type ErrorCodes = 'E001' | 'E002' | 'E003' | 'E004';
 
 export interface ErrorCodeMap {
   code: string;
@@ -29,6 +29,12 @@ const errorCodeMap: {
     title: 'Bad request',
     detail: 'Invalid user id',
     httpStatusCode: httpStatusCodes.BAD_REQUEST,
+  },
+  E004: {
+    code: 'E004',
+    title: 'Unauthorized',
+    detail: 'Missing or invalid access token',
+    httpStatusCode: httpStatusCodes.UNAUTHORIZED,
   },
 };
 
