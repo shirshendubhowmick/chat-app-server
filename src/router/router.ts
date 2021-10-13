@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { createUserSession } from '~/controllers/users';
 
 const rootRouter = Router();
 
@@ -12,12 +13,6 @@ rootRouter.get('/', (_, res) => {
 
 const userRouter = Router();
 
-userRouter.get('/', (_, res) => {
-  res.send({
-    data: {
-      message: 'Welcome to User API',
-    },
-  });
-});
+userRouter.post('/session', createUserSession);
 
 export { rootRouter, userRouter };
