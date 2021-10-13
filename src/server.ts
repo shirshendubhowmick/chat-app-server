@@ -16,6 +16,11 @@ const io = new Server(server);
 
 // * Middlewares
 app.use(morgan('combined'));
+app.use(
+  express.json({
+    limit: '2mb',
+  }),
+);
 
 // * Routers
 app.use('/', router.rootRouter);
