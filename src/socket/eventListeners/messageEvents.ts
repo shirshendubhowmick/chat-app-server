@@ -17,12 +17,19 @@ function processMessageEvent(
   logger.logInfo('Received message from user', {
     messagePayload,
   });
-  socket.broadcast.emit('message', {
+
+  const broadcasePayload = {
     userId: authPayload.userId,
     name: authPayload.name,
     message: messagePayload,
-  });
+  };
+
+  socket.broadcast.emit('message', broadcasePayload);
   callback(getSocketAcknowledgementResponse(true));
+
+  logger.logInfo('Broadcasted message to everyone', {
+    ...broadcasePayload,
+  });
 }
 
 export default processMessageEvent;

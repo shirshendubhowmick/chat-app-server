@@ -3,10 +3,11 @@ import { Socket } from 'socket.io';
 import cache, { AuthPayload } from '~/cache/cache';
 import { authCookieName } from '~/constants';
 import { validateIncomingEvents } from '../middleware/validation';
+import { processDisconnectEvent } from './disconnectEvents';
 import processMessageEvent from './messageEvents';
 import { AcknowledgementCallback } from './types';
 
-function registerEventListener(socket: Socket) {
+function registerEventListeners(socket: Socket) {
   const { cookies } = socket.request as IncomingMessage & {
     cookies?: { [key: string]: string } | undefined;
   } & { [key: string]: any };
@@ -22,6 +23,10 @@ function registerEventListener(socket: Socket) {
   socket.on('message', (payload: any, callback: AcknowledgementCallback) => {
     processMessageEvent(authPayload, socket, payload, callback);
   });
+
+  socket.on('disconnect', (reason) => {
+    processDisconnectEvent(authPayload, socket, reason);
+  });
 }
 
-export default registerEventListener;
+export default registerEventListeners;

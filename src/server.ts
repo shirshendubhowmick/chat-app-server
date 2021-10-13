@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 import * as router from './router/router';
 import { fourOFourHandler } from './middlewares/errorHandlers';
 import { socketIoCookieParser } from './socket/middleware/cookieParser';
-import registerEventListener from './socket/eventListeners';
+import registerEventListeners from './socket/eventListeners';
 import logger from './services/logger';
 
 const PORT = process.env.PORT || 3000;
@@ -35,7 +35,7 @@ io.use(socketIoCookieParser);
 
 io.on('connection', (socket) => {
   logger.logInfo('Incoming connection', { address: socket.handshake.address });
-  registerEventListener(socket);
+  registerEventListeners(socket);
 });
 
 server.listen(PORT, () => {

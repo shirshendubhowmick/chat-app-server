@@ -13,7 +13,10 @@ class Cache {
   }
 
   setAccessToken(accessToken: string, payload: AuthPayload): boolean {
-    return this.cache.set(accessToken, payload);
+    return (
+      this.cache.set(accessToken, payload) &&
+      this.cache.set('adminUser', payload.userId)
+    );
   }
 
   verifyAccessToken(accessToken: string): AuthPayload | undefined {
@@ -22,6 +25,7 @@ class Cache {
 
   deleteAccessToken(accessToken: string) {
     this.cache.del(accessToken);
+    this.cache.del('adminUser');
   }
 }
 
