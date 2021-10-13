@@ -2,6 +2,7 @@ import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 
 import messageEventHandler from './socket/messageHandler';
 import { validateIncomingEvents } from './socket/middleware/validation';
@@ -16,6 +17,7 @@ const io = new Server(server);
 
 // * Middlewares
 app.use(morgan('combined'));
+app.use(cookieParser());
 app.use(
   express.json({
     limit: '2mb',
