@@ -16,7 +16,7 @@ export const authChecker = (
   if (!accessToken) {
     const { httpStatusCode, errorData } = generateErrorResponse('E004');
     res.status(httpStatusCode).send(errorData);
-    logger.logInfo('Unauthorized request, access token not available', {});
+    logger.logInfo('Unauthorized request, access token not available');
     return;
   }
 
@@ -25,7 +25,7 @@ export const authChecker = (
   if (!authPayload) {
     const { httpStatusCode, errorData } = generateErrorResponse('E004');
     res.status(httpStatusCode).send(errorData);
-    logger.logInfo('Unauthorized request, invalid access token', {});
+    logger.logInfo('Unauthorized request, invalid access token');
     return;
   }
   res.locals.authPayload = authPayload;

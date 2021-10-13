@@ -5,15 +5,15 @@ class Logger {
     this.logger = console;
   }
 
-  logInfo(message: string, payload: object) {
+  logInfo(message: string, payload: object = {}) {
     this.logger.log({ level: 'INFO', message, ...payload });
   }
 
-  logError(message: string, payload: object) {
+  logError(message: string, payload: object = {}) {
     this.logger.log({ level: 'ERROR', message, ...payload });
   }
 
-  logDebug(message: string, payload: object) {
+  logDebug(message: string, payload: object = {}) {
     this.logger.log({ level: 'DEBUG', message, ...payload });
   }
 }
