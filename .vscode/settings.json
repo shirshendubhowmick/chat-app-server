@@ -1,0 +1,6 @@
+{
+  "css.validate": false,
+  "editor.formatOnSave": true,
+  "files.insertFinalNewline": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+}

@@ -1,0 +1,45 @@
+{
+  "extends": ["airbnb-base", "airbnb-typescript/base", "prettier"],
+  "plugins": ["prettier"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "prettier/prettier": ["error"],
+    // * All JS rules
+    "no-console": "off",
+    "no-underscore-dangle": 0,
+    "no-warning-comments": [
+      2,
+      { "terms": ["temp", "no-commit", "dont-commit"], "location": "start" }
+    ],
+    "radix": 0,
+    "global-require": 0,
+    "quote-props": ["error", "consistent-as-needed"],
+    "no-unused-expressions": [
+      "error",
+      {
+        "allowShortCircuit": true,
+        "allowTernary": true,
+        "allowTaggedTemplates": true
+      }
+    ],
+    // "arrow-parens": ["error", "as-needed", { "requireForBlockBody": true }],
+    "object-shorthand": ["error", "properties"],
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error"]
+  },
+  "env": {
+    "node": true,
+    "jest": true
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [["~", "./src"]],
+        "extensions": [".ts", ".js", ".json"]
+      }
+    }
+  }
+}

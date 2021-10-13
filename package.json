@@ -1,0 +1,53 @@
+{
+  "name": "chat-app-server",
+  "version": "0.0.0",
+  "description": "Websocket based 1 to many chat app server",
+  "main": "src/server.ts",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
+    "lint-staged": "lint-staged",
+    "start": "ts-node src/server.ts",
+    "prepare": "husky install",
+    "start:debug": "nodemon src/server.ts"
+  },
+  "lint-staged": {
+    "*.{js,ts,}": [
+      "eslint",
+      "prettier"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shirshendubhowmick/chat-app-server.git"
+  },
+  "keywords": [
+    "socket.io",
+    "chat",
+    "websocket"
+  ],
+  "author": "Shirshendu Bhowmick",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shirshendubhowmick/chat-app-server/issues"
+  },
+  "homepage": "https://github.com/shirshendubhowmick/chat-app-server#readme",
+  "devDependencies": {
+    "@types/node": "^16.10.5",
+    "@typescript-eslint/eslint-plugin": "^4.31.2",
+    "@typescript-eslint/parser": "^4.31.2",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-airbnb-typescript": "^14.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.2",
+    "lint-staged": "^11.2.3",
+    "nodemon": "^2.0.13",
+    "prettier": "^2.4.1",
+    "ts-node": "^10.3.0",
+    "typescript": "^4.4.4"
+  }
+}
