@@ -2,6 +2,7 @@ import NodeCache from 'node-cache';
 
 export interface AuthPayload {
   userId: string;
+  name: string;
 }
 
 class Cache {
