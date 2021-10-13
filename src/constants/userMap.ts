@@ -1,4 +1,9 @@
-const userMap = {
+const userMap: {
+  [key: string]: {
+    userId: string;
+    name: string;
+  };
+} = {
   avtr001: {
     userId: 'avtr001',
     name: 'John',
