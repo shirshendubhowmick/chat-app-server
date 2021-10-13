@@ -15,6 +15,10 @@ class Cache {
     return this.cache.set(accessToken, payload);
   }
 
+  verifyAccessToken(accessToken: string): AuthPayload | undefined {
+    return this.cache.get(accessToken);
+  }
+
   deleteAccessToken(accessToken: string) {
     this.cache.del(accessToken);
   }
