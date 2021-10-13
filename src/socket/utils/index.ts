@@ -1,7 +1,7 @@
 import acknowledgementErrorMap, {
   AcknowledgementErrorCode,
 } from '../constants/acknowledgementErrorMap';
-import { AcknowledgementMessage } from '../eventListeners/type';
+import { AcknowledgementMessage } from '../eventListeners/types';
 
 function getSocketAcknowledgementResponse(
   success: boolean,
