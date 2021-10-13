@@ -4,10 +4,11 @@ import { Server } from 'socket.io';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 
-import messageEventHandler from './socket/messageHandler';
-import { validateIncomingEvents } from './socket/middleware/validation';
 import * as router from './router/router';
 import { fourOFourHandler } from './middlewares/errorHandlers';
+import { socketIoCookieParser } from './socket/middleware/cookieParser';
+import registerEventListener from './socket/eventListeners';
+import logger from './services/logger';
 
 const PORT = process.env.PORT || 3000;
 
@@ -30,10 +31,11 @@ app.use('/user', router.userRouter);
 
 app.use(fourOFourHandler);
 
+io.use(socketIoCookieParser);
+
 io.on('connection', (socket) => {
-  console.log('Incoming connection');
-  socket.use(validateIncomingEvents);
-  socket.on('message', messageEventHandler);
+  logger.logInfo('Incoming connection', { address: socket.handshake.address });
+  registerEventListener(socket);
 });
 
 server.listen(PORT, () => {
