@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 
 import * as router from './router/router';
-import { fourOFourHandler } from './middlewares/errorHandlers';
+import { fourOFourHandler, setCorsHeaders } from './middlewares/utils';
 import { socketIoCookieParser } from './socket/middleware/cookieParser';
 import registerEventListeners from './socket/eventListeners';
 import logger from './services/logger';
@@ -24,6 +24,7 @@ app.use(
     limit: '2mb',
   }),
 );
+app.use(setCorsHeaders);
 
 // * Routers
 app.use('/', router.rootRouter);
