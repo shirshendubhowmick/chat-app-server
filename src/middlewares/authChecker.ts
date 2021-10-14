@@ -24,7 +24,13 @@ export const authChecker = (
 
   if (!authPayload) {
     const { httpStatusCode, errorData } = generateErrorResponse('E004');
-    res.status(httpStatusCode).send(errorData);
+    res
+      .clearCookie(authCookieName, {
+        httpOnly: true,
+        sameSite: 'lax',
+      })
+      .status(httpStatusCode)
+      .send(errorData);
     logger.logInfo('Unauthorized request, invalid access token');
     return;
   }

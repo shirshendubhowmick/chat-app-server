@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { AuthPayload } from '~/cache/cache';
+import cache from '~/cache/cache';
 import { authCookieName } from '~/constants';
 import httpStatusCodes from '~/constants/httpStatusCodes';
 import userMap from '~/constants/userMap';
@@ -38,14 +38,22 @@ async function createUserSession(req: Request, res: Response) {
 }
 
 function getUserSession(_: Request, res: Response) {
-  const authPayload = res.locals.authPayload as AuthPayload;
+  // const accessToken = req.cookies[authCookieName];
 
-  logger.logInfo('Get user session request', { userId: authPayload.userId });
-
-  res.status(httpStatusCodes.OK).send(
-    generateSuccessResponse({
-      ...authPayload,
-    }),
+  const isAdminUserPositionAvailable = cache.isAdminUserPositionAvailable();
+  res
+    .clearCookie(authCookieName, {
+      httpOnly: true,
+      sameSite: 'lax',
+    })
+    .status(httpStatusCodes.OK)
+    .send(
+      generateSuccessResponse({
+        isAdminUserPositionAvailable,
+      }),
+    );
+  logger.logInfo(
+    'Received session check request with an existing access token',
   );
 }
 

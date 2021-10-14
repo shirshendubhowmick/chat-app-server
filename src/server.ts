@@ -34,6 +34,7 @@ app.use(setCorsHeaders);
 // * Routers
 app.use('/', router.rootRouter);
 app.use('/user', router.userRouter);
+app.use('/status', router.statusRouter);
 
 app.use(fourOFourHandler);
 

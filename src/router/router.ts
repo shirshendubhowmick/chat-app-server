@@ -17,4 +17,8 @@ const userRouter = Router();
 userRouter.post('/session', createUserSession);
 userRouter.get('/session', authChecker, getUserSession);
 
-export { rootRouter, userRouter };
+const statusRouter = Router();
+
+statusRouter.get('/session', getUserSession);
+
+export { rootRouter, userRouter, statusRouter };

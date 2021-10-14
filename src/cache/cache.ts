@@ -5,6 +5,8 @@ export interface AuthPayload {
   name: string;
 }
 
+const adminUserKey = 'adminUser';
+
 class Cache {
   cache: NodeCache;
 
@@ -15,7 +17,7 @@ class Cache {
   setAccessToken(accessToken: string, payload: AuthPayload): boolean {
     return (
       this.cache.set(accessToken, payload) &&
-      this.cache.set('adminUser', payload.userId)
+      this.cache.set(adminUserKey, payload.userId)
     );
   }
 
@@ -25,7 +27,11 @@ class Cache {
 
   deleteAccessToken(accessToken: string) {
     this.cache.del(accessToken);
-    this.cache.del('adminUser');
+    this.cache.del(adminUserKey);
+  }
+
+  isAdminUserPositionAvailable() {
+    return !this.cache.get(adminUserKey);
   }
 }
 
