@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { getMessages } from '~/controllers/messages';
 import { createUserSession, getUserSession } from '~/controllers/users';
 import { authChecker } from '~/middlewares/authChecker';
 
@@ -21,4 +22,8 @@ const statusRouter = Router();
 
 statusRouter.get('/session', getUserSession);
 
-export { rootRouter, userRouter, statusRouter };
+const messageRouter = Router();
+
+messageRouter.get('/', getMessages);
+
+export { rootRouter, userRouter, statusRouter, messageRouter };

@@ -53,6 +53,11 @@ class Cache {
 
     return id;
   }
+
+  getMessageList() {
+    const msgList: ProcessedMessage[] | undefined = this.cache.get(msgListKey);
+    return msgList || [];
+  }
 }
 
 const cache = new Cache();
