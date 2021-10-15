@@ -7,7 +7,7 @@ import { processDisconnectEvent } from './disconnectEvents';
 import processMessageEvent from './messageEvents';
 import { AcknowledgementCallback, ProcessedMessage } from './types';
 
-function registerEventListeners(socket: Socket) {
+async function registerEventListeners(socket: Socket) {
   const { cookies } = socket.request as IncomingMessage & {
     cookies?: { [key: string]: string } | undefined;
   } & { [key: string]: any };
@@ -15,7 +15,9 @@ function registerEventListeners(socket: Socket) {
   const accessToken = cookies?.[authCookieName] ?? null;
   let authPayload: AuthPayload | undefined;
   if (accessToken) {
+    const release = await cache.accuireAccessTokenLock();
     authPayload = cache.verifyAccessToken(accessToken);
+    release();
   }
 
   if (authPayload) {

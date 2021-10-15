@@ -6,7 +6,7 @@ import logger from '~/services/logger';
 import { generateErrorResponse } from '~/utils';
 
 // eslint-disable-next-line import/prefer-default-export
-export const authChecker = (
+export const authChecker = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -20,7 +20,11 @@ export const authChecker = (
     return;
   }
 
+  const release = await cache.accuireAccessTokenLock();
+
   const authPayload = cache.verifyAccessToken(accessToken);
+
+  release();
 
   if (!authPayload) {
     const { httpStatusCode, errorData } = generateErrorResponse('E004');

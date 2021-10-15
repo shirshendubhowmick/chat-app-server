@@ -1,4 +1,6 @@
 import NodeCache from 'node-cache';
+import { Mutex, MutexInterface, withTimeout } from 'async-mutex';
+
 import { ProcessedMessage } from '~/socket/eventListeners/types';
 
 export interface AuthPayload {
@@ -12,11 +14,22 @@ const msgListKey = 'messageList';
 class Cache {
   cache: NodeCache;
 
+  accessTokenMutex: MutexInterface;
+
+  chatMutex: MutexInterface;
+
   constructor() {
     this.cache = new NodeCache();
+    this.accessTokenMutex = withTimeout(new Mutex(), 1000);
+    this.chatMutex = withTimeout(new Mutex(), 1000);
   }
 
-  setAccessToken(accessToken: string, payload: AuthPayload): boolean {
+  accuireAccessTokenLock() {
+    console.log('Accuring lock');
+    return this.accessTokenMutex.acquire();
+  }
+
+  setAccessToken(accessToken: string, payload: AuthPayload) {
     return (
       this.cache.set(accessToken, payload) &&
       this.cache.set(adminUserKey, payload.userId)

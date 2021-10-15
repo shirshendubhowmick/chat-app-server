@@ -21,14 +21,19 @@ async function createUserSession(req: Request, res: Response) {
     return;
   }
 
+  const release = await cache.accuireAccessTokenLock();
+
   if (!cache.isAdminUserPositionAvailable()) {
     const { httpStatusCode, errorData } = generateErrorResponse('E005');
     res.status(httpStatusCode).send(errorData);
     logger.logInfo('Admin position no longer available', {
       userId,
     });
+    release();
     return;
   }
+
+  release();
 
   res
     .cookie(authCookieName, await generateAccessToken(userMap[userId]), {
@@ -46,10 +51,11 @@ async function createUserSession(req: Request, res: Response) {
   logger.logInfo('Created user session', { userId });
 }
 
-function getUserSession(_: Request, res: Response) {
-  // const accessToken = req.cookies[authCookieName];
-
+async function getUserSession(_: Request, res: Response) {
+  const release = await cache.accuireAccessTokenLock();
   const isAdminUserPositionAvailable = cache.isAdminUserPositionAvailable();
+  release();
+
   res
     .clearCookie(authCookieName, {
       httpOnly: true,

@@ -3,7 +3,7 @@ import cache, { AuthPayload } from '~/cache/cache';
 import logger from '~/services/logger';
 import { ProcessedMessage } from './types';
 
-function processDisconnectEvent(
+async function processDisconnectEvent(
   authPayload: AuthPayload | undefined,
   socket: Socket,
   reason: string,
@@ -14,7 +14,10 @@ function processDisconnectEvent(
   });
 
   if (authPayload) {
+    const release = await cache.accuireAccessTokenLock();
     cache.deleteAccessToken(authPayload?.userId as string);
+    release();
+
     const systemMessage: ProcessedMessage = {
       content: { text: `${authPayload.name} has left the chat` },
       name: 'System',
