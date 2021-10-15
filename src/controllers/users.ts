@@ -21,6 +21,15 @@ async function createUserSession(req: Request, res: Response) {
     return;
   }
 
+  if (!cache.isAdminUserPositionAvailable()) {
+    const { httpStatusCode, errorData } = generateErrorResponse('E005');
+    res.status(httpStatusCode).send(errorData);
+    logger.logInfo('Admin position no longer available', {
+      userId,
+    });
+    return;
+  }
+
   res
     .cookie(authCookieName, await generateAccessToken(userMap[userId]), {
       httpOnly: true,

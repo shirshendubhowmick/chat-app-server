@@ -1,6 +1,6 @@
 import httpStatusCodes from './httpStatusCodes';
 
-export type ErrorCodes = 'E001' | 'E002' | 'E003' | 'E004';
+export type ErrorCodes = 'E001' | 'E002' | 'E003' | 'E004' | 'E005';
 
 export interface ErrorCodeMap {
   code: string;
@@ -35,6 +35,12 @@ const errorCodeMap: {
     title: 'Unauthorized',
     detail: 'Missing or invalid access token',
     httpStatusCode: httpStatusCodes.UNAUTHORIZED,
+  },
+  E005: {
+    code: 'E005',
+    title: 'Forbidden',
+    detail: 'Admin position no longer available',
+    httpStatusCode: httpStatusCodes.FORBIDDEN,
   },
 };
 
