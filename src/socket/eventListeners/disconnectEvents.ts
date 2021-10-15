@@ -1,5 +1,5 @@
 import { Socket } from 'socket.io';
-import { AuthPayload } from '~/cache/cache';
+import cache, { AuthPayload } from '~/cache/cache';
 import logger from '~/services/logger';
 
 function processDisconnectEvent(
@@ -11,6 +11,8 @@ function processDisconnectEvent(
     ...authPayload,
     reason,
   });
+
+  cache.deleteAccessToken(authPayload?.userId as string);
 
   socket.broadcast.emit('adminPositionAvailable');
 
