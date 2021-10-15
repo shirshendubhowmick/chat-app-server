@@ -24,6 +24,7 @@ function processMessageEvent(
   const processedMessage: ProcessedMessage = {
     userId: authPayload.userId,
     name: authPayload.name,
+    type: 'user',
     timestamp: new Date(),
     content: messagePayload,
   };

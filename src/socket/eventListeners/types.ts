@@ -11,6 +11,7 @@ export type AcknowledgementCallback = (arg: AcknowledgementMessage) => void;
 
 export interface ProcessedMessage {
   id?: number;
+  type: 'user' | 'system';
   name: string;
   userId: string;
   timestamp: Date;
