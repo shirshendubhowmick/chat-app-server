@@ -1,4 +1,5 @@
 import NodeCache from 'node-cache';
+import { ProcessedMessage } from '~/socket/eventListeners/types';
 
 export interface AuthPayload {
   userId: string;
@@ -6,6 +7,7 @@ export interface AuthPayload {
 }
 
 const adminUserKey = 'adminUser';
+const msgListKey = 'messageList';
 
 class Cache {
   cache: NodeCache;
@@ -32,6 +34,24 @@ class Cache {
 
   isAdminUserPositionAvailable() {
     return !this.cache.get(adminUserKey);
+  }
+
+  addMessageToList(processedMessage: ProcessedMessage) {
+    let msgList: ProcessedMessage[] | undefined = this.cache.get(msgListKey);
+
+    if (!msgList) {
+      msgList = [];
+    }
+
+    const id = msgList.length;
+    msgList.push({
+      ...processedMessage,
+      id,
+    });
+
+    this.cache.set(msgListKey, msgList);
+
+    return id;
   }
 }
 

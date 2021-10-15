@@ -5,11 +5,13 @@ import { AcknowledgementMessage } from '../eventListeners/types';
 
 function getSocketAcknowledgementResponse(
   success: boolean,
+  msgId: number = -1,
   errorCode?: AcknowledgementErrorCode,
 ): AcknowledgementMessage {
   const ack: AcknowledgementMessage = {
     success,
     timestamp: new Date(),
+    msgId,
   };
   if (success) {
     return ack;

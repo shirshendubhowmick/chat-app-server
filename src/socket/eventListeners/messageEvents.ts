@@ -1,8 +1,8 @@
 import { Socket } from 'socket.io';
-import { AuthPayload } from '~/cache/cache';
+import cache, { AuthPayload } from '~/cache/cache';
 import logger from '~/services/logger';
 import { getSocketAcknowledgementResponse } from '../utils';
-import { AcknowledgementCallback } from './types';
+import { AcknowledgementCallback, ProcessedMessage } from './types';
 
 function processMessageEvent(
   authPayload: AuthPayload | undefined,
@@ -11,24 +11,35 @@ function processMessageEvent(
   callback: AcknowledgementCallback,
 ) {
   if (!authPayload) {
-    callback(getSocketAcknowledgementResponse(false, 'S001'));
+    if (typeof callback === 'function') {
+      callback(getSocketAcknowledgementResponse(false, undefined, 'S001'));
+    }
     return;
   }
-  logger.logInfo('Received message from user', {
+
+  logger.logInfo('Received message from admin user', {
     messagePayload,
   });
 
-  const broadcasePayload = {
+  const processedMessage: ProcessedMessage = {
     userId: authPayload.userId,
     name: authPayload.name,
-    message: messagePayload,
+    timestamp: new Date(),
+    content: messagePayload,
   };
 
-  socket.broadcast.emit('message', broadcasePayload);
-  callback(getSocketAcknowledgementResponse(true));
+  const msgId = cache.addMessageToList(processedMessage);
+
+  processedMessage.id = msgId;
+
+  socket.broadcast.emit('message', processedMessage);
+
+  if (typeof callback === 'function') {
+    callback(getSocketAcknowledgementResponse(true, msgId));
+  }
 
   logger.logInfo('Broadcasted message to everyone', {
-    ...broadcasePayload,
+    broadcastMessage: processedMessage,
   });
 }
 
