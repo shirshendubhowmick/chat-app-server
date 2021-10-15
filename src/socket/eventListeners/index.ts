@@ -5,7 +5,7 @@ import { authCookieName } from '~/constants';
 import { validateIncomingEvents } from '../middleware/validation';
 import { processDisconnectEvent } from './disconnectEvents';
 import processMessageEvent from './messageEvents';
-import { AcknowledgementCallback } from './types';
+import { AcknowledgementCallback, ProcessedMessage } from './types';
 
 function registerEventListeners(socket: Socket) {
   const { cookies } = socket.request as IncomingMessage & {
@@ -16,6 +16,20 @@ function registerEventListeners(socket: Socket) {
   let authPayload: AuthPayload | undefined;
   if (accessToken) {
     authPayload = cache.verifyAccessToken(accessToken);
+  }
+
+  if (authPayload) {
+    const systemMessage: ProcessedMessage = {
+      content: { text: `${authPayload.name} has joined the chat` },
+      name: 'System',
+      userId: '_system',
+      timestamp: new Date(),
+      type: 'system',
+    };
+
+    const msgId = cache.addMessageToList(systemMessage);
+    systemMessage.id = msgId;
+    socket.broadcast.emit('systemMessage', systemMessage);
   }
 
   socket.use(validateIncomingEvents);
