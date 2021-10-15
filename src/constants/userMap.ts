@@ -22,7 +22,7 @@ const userMap: {
   },
   avtr005: {
     userId: 'avtr005',
-    name: 'Harry ',
+    name: 'Harry',
   },
 };
 
