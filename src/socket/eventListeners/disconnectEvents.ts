@@ -12,11 +12,12 @@ function processDisconnectEvent(
     reason,
   });
 
-  cache.deleteAccessToken(authPayload?.userId as string);
+  if (authPayload) {
+    cache.deleteAccessToken(authPayload?.userId as string);
+    socket.broadcast.emit('adminPositionAvailable');
 
-  socket.broadcast.emit('adminPositionAvailable');
-
-  logger.logInfo('Broadcasted admin position available message to everyone');
+    logger.logInfo('Broadcasted admin position available message to everyone');
+  }
 }
 
 // eslint-disable-next-line import/prefer-default-export
