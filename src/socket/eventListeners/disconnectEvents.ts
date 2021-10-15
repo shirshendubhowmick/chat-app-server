@@ -28,7 +28,7 @@ function processDisconnectEvent(
     systemMessage.id = msgId;
     socket.broadcast.emit('systemMessage', systemMessage);
 
-    socket.broadcast.emit('adminPositionAvailable', systemMessage);
+    socket.broadcast.emit('adminPositionAvailable');
 
     logger.logInfo('Broadcasted admin position available message to everyone');
   }
