@@ -91,4 +91,31 @@ async function getUserSession(_: Request, res: Response) {
   );
 }
 
-export { createUserSession, getUserSession };
+async function deleteUserSession(req: Request, res: Response) {
+  const accessToken = req.cookies[authCookieName];
+
+  let release;
+
+  try {
+    release = await cache.accuireAccessTokenLock();
+  } catch (err) {
+    const { httpStatusCode, errorData } = generateErrorResponse('E006');
+    res.status(httpStatusCode).send(errorData);
+    logger.logError('Error acquiring access token lock', err as object);
+    return;
+  }
+
+  cache.deleteAccessToken(accessToken);
+  release();
+
+  res
+    .clearCookie(authCookieName, {
+      httpOnly: true,
+      sameSite: 'lax',
+    })
+    .status(httpStatusCodes.NO_CONTENT)
+    .send();
+  logger.logInfo('Received logout request');
+}
+
+export { createUserSession, getUserSession, deleteUserSession };

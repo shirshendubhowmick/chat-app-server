@@ -1,9 +1,16 @@
 import { Router } from 'express';
 import { getMessages } from '~/controllers/messages';
-import { createUserSession, getUserSession } from '~/controllers/users';
+import {
+  createUserSession,
+  deleteUserSession,
+  getUserSession,
+} from '~/controllers/users';
 import { authChecker } from '~/middlewares/authChecker';
 
 const rootRouter = Router();
+const userRouter = Router();
+const statusRouter = Router();
+const messageRouter = Router();
 
 rootRouter.get('/', (_, res) => {
   res.send({
@@ -13,16 +20,11 @@ rootRouter.get('/', (_, res) => {
   });
 });
 
-const userRouter = Router();
-
 userRouter.post('/session', createUserSession);
 userRouter.get('/session', authChecker, getUserSession);
-
-const statusRouter = Router();
+userRouter.delete('/session', authChecker, deleteUserSession);
 
 statusRouter.get('/session', getUserSession);
-
-const messageRouter = Router();
 
 messageRouter.get('/', getMessages);
 
