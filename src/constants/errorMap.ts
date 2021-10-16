@@ -1,6 +1,6 @@
 import httpStatusCodes from './httpStatusCodes';
 
-export type ErrorCodes = 'E001' | 'E002' | 'E003' | 'E004' | 'E005';
+export type ErrorCodes = 'E001' | 'E002' | 'E003' | 'E004' | 'E005' | 'E006';
 
 export interface ErrorCodeMap {
   code: string;
@@ -41,6 +41,12 @@ const errorCodeMap: {
     title: 'Forbidden',
     detail: 'Admin position no longer available',
     httpStatusCode: httpStatusCodes.FORBIDDEN,
+  },
+  E006: {
+    code: 'E006',
+    title: 'Service unavailable',
+    detail: 'Error acquiring lock',
+    httpStatusCode: httpStatusCodes.SERVICE_UNAVAILABLE,
   },
 };
 

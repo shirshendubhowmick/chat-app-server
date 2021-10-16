@@ -14,7 +14,16 @@ async function processDisconnectEvent(
   });
 
   if (authPayload) {
-    const release = await cache.accuireAccessTokenLock();
+    let release;
+    try {
+      release = await cache.accuireAccessTokenLock();
+    } catch (err) {
+      // const { httpStatusCode, errorData } = generateErrorResponse('E006');
+      // res.status(httpStatusCode).send(errorData);
+      logger.logError('Error acquiring access token lock', err as object);
+      return;
+    }
+
     cache.deleteAccessToken(authPayload?.userId as string);
     release();
 

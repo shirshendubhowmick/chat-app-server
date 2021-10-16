@@ -2,6 +2,7 @@ import { IncomingMessage } from 'http';
 import { Socket } from 'socket.io';
 import cache, { AuthPayload } from '~/cache/cache';
 import { authCookieName } from '~/constants';
+import logger from '~/services/logger';
 import { validateIncomingEvents } from '../middleware/validation';
 import { processDisconnectEvent } from './disconnectEvents';
 import processMessageEvent from './messageEvents';
@@ -15,9 +16,14 @@ async function registerEventListeners(socket: Socket) {
   const accessToken = cookies?.[authCookieName] ?? null;
   let authPayload: AuthPayload | undefined;
   if (accessToken) {
-    const release = await cache.accuireAccessTokenLock();
-    authPayload = cache.verifyAccessToken(accessToken);
-    release();
+    try {
+      const release = await cache.accuireAccessTokenLock();
+      authPayload = cache.verifyAccessToken(accessToken);
+      release();
+    } catch (err) {
+      logger.logError('Error acquiring access token lock', err as object);
+      return;
+    }
   }
 
   if (authPayload) {

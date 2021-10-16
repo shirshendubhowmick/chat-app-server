@@ -21,7 +21,16 @@ async function createUserSession(req: Request, res: Response) {
     return;
   }
 
-  const release = await cache.accuireAccessTokenLock();
+  let release;
+
+  try {
+    release = await cache.accuireAccessTokenLock();
+  } catch (err) {
+    const { httpStatusCode, errorData } = generateErrorResponse('E006');
+    res.status(httpStatusCode).send(errorData);
+    logger.logError('Error acquiring access token lock', err as object);
+    return;
+  }
 
   if (!cache.isAdminUserPositionAvailable()) {
     const { httpStatusCode, errorData } = generateErrorResponse('E005');
@@ -32,8 +41,6 @@ async function createUserSession(req: Request, res: Response) {
     release();
     return;
   }
-
-  release();
 
   res
     .cookie(authCookieName, await generateAccessToken(userMap[userId]), {
@@ -48,11 +55,23 @@ async function createUserSession(req: Request, res: Response) {
       }),
     );
 
+  release();
+
   logger.logInfo('Created user session', { userId });
 }
 
 async function getUserSession(_: Request, res: Response) {
-  const release = await cache.accuireAccessTokenLock();
+  let release;
+
+  try {
+    release = await cache.accuireAccessTokenLock();
+  } catch (err) {
+    const { httpStatusCode, errorData } = generateErrorResponse('E006');
+    res.status(httpStatusCode).send(errorData);
+    logger.logError('Error acquiring access token lock', err as object);
+    return;
+  }
+
   const isAdminUserPositionAvailable = cache.isAdminUserPositionAvailable();
   release();
 
