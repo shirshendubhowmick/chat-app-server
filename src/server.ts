@@ -48,5 +48,9 @@ io.on('connection', (socket) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`Express server running on port ${PORT}`);
+  console.log(`Express & Socket.io server running on port ${PORT}`);
 });
+
+// app.listen(PORT, () => {
+//   console.log(`Express server running on port ${PORT}`);
+// });
