@@ -16,6 +16,7 @@ export interface ProcessedMessage {
   userId: string;
   timestamp: Date;
   content: {
-    text: string;
+    data: string;
+    type: 'text' | 'image';
   };
 }

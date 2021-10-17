@@ -28,7 +28,7 @@ async function processDisconnectEvent(
     release();
 
     const systemMessage: ProcessedMessage = {
-      content: { text: `${authPayload.name} has left the chat` },
+      content: { data: `${authPayload.name} has left the chat`, type: 'text' },
       name: 'System',
       userId: '_system',
       timestamp: new Date(),

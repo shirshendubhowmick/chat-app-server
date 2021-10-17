@@ -28,7 +28,10 @@ async function registerEventListeners(socket: Socket) {
 
   if (authPayload) {
     const systemMessage: ProcessedMessage = {
-      content: { text: `${authPayload.name} has joined the chat` },
+      content: {
+        data: `${authPayload.name} has joined the chat`,
+        type: 'text',
+      },
       name: 'System',
       userId: '_system',
       timestamp: new Date(),
