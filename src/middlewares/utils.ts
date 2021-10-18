@@ -1,15 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { corsWhilteList } from '~/constants';
-import httpStatusCodes from '~/constants/httpStatusCodes';
+import { generateErrorResponse } from '~/utils';
 
 export const fourOFourHandler = (_: Request, res: Response) => {
-  res.status(httpStatusCodes.NOT_FOUND).send({
-    errors: [
-      {
-        title: 'Resource not found',
-      },
-    ],
-  });
+  const { httpStatusCode, errorData } = generateErrorResponse('E002');
+  res.status(httpStatusCode).send(errorData);
 };
 
 export const setCorsHeaders = (
